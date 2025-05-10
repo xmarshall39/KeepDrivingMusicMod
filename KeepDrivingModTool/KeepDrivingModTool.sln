@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepDrivingModTool", "KeepDrivingModTool\KeepDrivingModTool.csproj", "{BDADEF3A-B69F-4C96-85C7-616B2E30FAA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeepDrivingModCLI", "KeepDrivingModCLI\KeepDrivingModCLI.csproj", "{B489641C-8899-41E6-B03A-0DD3EC663DE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDADEF3A-B69F-4C96-85C7-616B2E30FAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDADEF3A-B69F-4C96-85C7-616B2E30FAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDADEF3A-B69F-4C96-85C7-616B2E30FAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDADEF3A-B69F-4C96-85C7-616B2E30FAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B489641C-8899-41E6-B03A-0DD3EC663DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B489641C-8899-41E6-B03A-0DD3EC663DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B489641C-8899-41E6-B03A-0DD3EC663DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B489641C-8899-41E6-B03A-0DD3EC663DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4705B59-2302-4532-8216-D3F75ED631C8}
+	EndGlobalSection
+EndGlobal

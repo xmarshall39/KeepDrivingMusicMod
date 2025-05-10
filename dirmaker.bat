@@ -1,0 +1,12 @@
+if not exist "HolyNow_" mkdir HolyNow_
+if not exist "Zimmer_" mkdir Zimmer_
+if not exist "Mundane_" mkdir Mundane_
+if not exist "CrystalBoys_" mkdir CrystalBoys_
+if not exist "FWA_" mkdir FWA_
+if not exist "Makthaverskan" mkdir Makthaverskan
+if not exist "Honeydrips_" mkdir Honeydrips_
+if not exist "Dorena_" mkdir Dorena_
+if not exist "MyDarlingYou_" mkdir MyDarlingYou_
+if not exist "Aasma_" mkdir Aasma_
+if not exist "Songwriter_" mkdir Songwriter_
+if not exist "Huervo_" mkdir Huervo_

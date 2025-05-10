@@ -31,4 +31,11 @@ public class ReplaceOptions
     /// Equal separated values of embedded texture and the file to replace the embedded texture with.
     /// </summary>
     public string[] Textures { get; set; }
+
+#if true //KEEP_DRIVING_MOD
+    /// <summary>
+    /// Equal separated values of embedded audio and the file to replace the embedded audio with.
+    /// </summary
+    public string[] Audio { get; set; }
+#endif
 }

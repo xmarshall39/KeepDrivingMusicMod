@@ -149,7 +149,12 @@ public partial class Program : IScriptInterface
                 $"Which code files to replace with which file. Ex. 'gml_Script_init_map=./newCode.gml'. It is possible to replace everything by using '{UMT_REPLACE_ALL}'"),
             new Option<string[]>(new[] { "-t", "--textures" },
                 $"Which embedded texture entry to replace with which file. Ex. 'Texture 0=./newTexture.png'. It is possible to replace everything by using '{UMT_REPLACE_ALL}'")
+#if true //KEEP_DRIVING_MOD
+            ,new Option<string[]>(new[] { "-a", "--audio" }, "Which embedded audio entry to replace with which file. Ex. 'Audio 0=./newAudio.wav'")
+#endif
+
         };
+
         replaceCommand.Handler = CommandHandler.Create<ReplaceOptions>(Program.Replace);
 
         // Merge everything together
@@ -376,6 +381,11 @@ public partial class Program : IScriptInterface
         return EXIT_SUCCESS;
     }
 
+    struct Stuff
+    {
+        public FileInfo fileInfo;
+        public string embeddedName, audioGroupName;
+    }
     /// <summary>
     /// Method that gets executed on the "replace" command
     /// </summary>
@@ -386,6 +396,7 @@ public partial class Program : IScriptInterface
         Program program;
         try
         {
+            Console.WriteLine("Creating Program...");
             program = new Program(options.Datafile, null, options.Output, options.Verbose);
         }
         catch (FileNotFoundException e)
@@ -460,6 +471,40 @@ public partial class Program : IScriptInterface
             }
         }
 
+#if true //KEEP_DRIVING_MOD
+        
+        if (options.Audio?.Length > 0)
+        {
+            Dictionary<string, Stuff> audioDict = new Dictionary<string, Stuff>();
+            foreach (string song in options.Audio)
+            {
+                string[] splitText = song.Split("=");
+
+                if (splitText.Length < 2)
+                {
+                    Console.Error.WriteLine($"{song} is malformed! Should be of format 'Name=./new.wav' 'Name=./new.wav=ag_music' 'ID=./new.wav=ag_music=embedded_name instead!");
+                }
+                string embeddedName = string.Empty, audioGroup = string.Empty;
+                if (splitText.Length > 2) audioGroup = splitText[2];
+                if (splitText.Length > 3) embeddedName = splitText[3];
+                
+                audioDict.Add(splitText[0], new Stuff() { fileInfo = new FileInfo(splitText[1]), embeddedName = embeddedName, audioGroupName = audioGroup });
+            }
+            //TODO: Implement UMT_REPLACE_ALL (maybe...)
+            if (audioDict.ContainsKey(UMT_REPLACE_ALL))
+            {
+                Console.Error.WriteLine("No UMT_REPLACE_ALL implementation exists!");
+                return EXIT_FAILURE;
+            }
+            else
+            {
+                foreach(var audioPair in audioDict)
+                {
+                    program.ReplaceSoundWithFile(audioPair.Key, audioPair.Value.fileInfo, audioPair.Value.audioGroupName, audioPair.Value.embeddedName);
+                }
+            }
+        }
+#endif
         // if parameter to save file was given, save the data file
         if (options.Output != null)
             program.SaveDataFile(options.Output.FullName);
@@ -832,6 +877,110 @@ public partial class Program : IScriptInterface
 
         texture.TextureData.Image = GMImage.FromPng(File.ReadAllBytes(fileToReplace.FullName));
     }
+
+#if true //KEEP_DRIVING_MOD
+    /// <summary>
+    /// Use the AudioID to 
+    /// </summary>
+    /// <param name="audioID"></param>
+    /// <param name="fileToReplace"></param>
+    /// <param name="audioGroup"></param>
+    /// <param name="embeddedName"></param>
+    private void ReplaceSoundWithFile(string audioID, FileInfo fileToReplace, string audioGroup, string embeddedName)
+    {
+        if (fileToReplace.Extension != ".wav")
+        {
+            Console.Error.WriteLine($"{audioID} using incorrect extension {fileToReplace.Extension}. Only .wav files are accepted!!");
+            return;
+        }
+        //If we have no Sounds, then we're probably in a .dat file for a specific audio group
+        //assuming this is true, we won't care about the audioGroup parameter
+        UndertaleEmbeddedAudio audio = null;
+        if (Data.Sounds != null && !string.IsNullOrEmpty(audioGroup))
+        {
+            var matchingSounds = Data.Sounds.Where(x => x.AudioGroup.Name.Content == audioGroup && x.AudioID.ToString() == audioID);
+            if (matchingSounds == null || matchingSounds.Count() == 0)
+            {
+                Console.Error.WriteLine($"No UndertaleSound found with AudioID {audioID}");
+                return;
+            }
+            else if (matchingSounds.Count() > 1)
+            {
+                Console.WriteLine($"Warning: Multiple sounds in Audio Group {audioGroup} use AudioID {audioID}. That's kinda odd");
+                foreach (var s in matchingSounds)
+                {
+                    Console.WriteLine($"\t{s.Name.Content}");
+                }
+            }
+            UndertaleSound sound = matchingSounds.First();
+            if (embeddedName != string.Empty)
+            {
+                sound.Name.Content = embeddedName;
+                sound.File.Content = embeddedName + fileToReplace.Extension;
+            }
+
+            audio = sound.AudioFile;
+            if (audio == null)
+            {
+                Console.WriteLine($"The audio file for {audioID} (id {sound.AudioID} | group {audioGroup}) is not located in this file!");
+            }
+        }
+        else
+        {
+            
+            var matchingAudio = Data.EmbeddedAudio.Where(x => 
+            {
+                //Format: UnteraleEmbeddedAudio [NUMBER]
+                string[] splitName = x.Name.Content.Split();
+                if (splitName.Length > 1)
+                {
+                    if (splitName[1] == audioID) return true;
+                }
+                return false;
+
+            });
+            if (matchingAudio == null || matchingAudio.Count() == 0)
+            {
+                Console.Error.WriteLine($"No UndertaleEmbeddedAudio found with AudioID {audioID} in the name!");
+                return;
+            }
+            else if (matchingAudio.Count() > 1)
+            {
+                Console.WriteLine($"Warning: Multiple embedded audio chunks contain AudioID {audioID} in their name. That's kinda odd...");
+                foreach (var s in matchingAudio)
+                {
+                    Console.WriteLine($"\t{s.Name.Content}");
+                }
+            }
+            audio = matchingAudio.First();
+
+            if (audio == null)
+            {
+                Console.Error.WriteLine($"Data file does not contain an embedded audio named {audioID}!");
+            }
+        }
+
+
+        if (audio == null) return;
+
+
+        if (Verbose)
+            Console.WriteLine("Replacing " + audioID + " With " + fileToReplace.Name);
+
+        try
+        {
+            byte[] data = File.ReadAllBytes(fileToReplace.FullName);
+
+            // TODO: Make sure it's valid WAV
+
+            audio.Data = data;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Failed to import file: " + ex.Message);
+        }
+    }
+#endif
 
     /// <summary>
     /// Evaluates and executes the contents of a file as C# Code.
