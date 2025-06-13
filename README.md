@@ -20,14 +20,15 @@ The steps to do so are as follows:
   <li>Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The songlist.txt in each folder will indicate what the original tracks were and how many there are</li>
   <ul>
     <li>Song folders are named with a code for representing a band in the base game followed by an underscore</li>
-    <li>For organizational convenience, you may add to the folder name after the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern</li>
+    <li>For organizational convenience, you may add to the folder name after the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern
+    </li>
   </ul>
   <li>Add song files to each folder. You can add up to total number of songs that artist had in the base game</li>
   <li>Rename each song according to the following format:</li>
   </ul>
     
 ```
-    [Order Number]__[Artist Name]__[Album Name]__[Song Name].wav
+[Order Number]__[Artist Name]__[Album Name]__[Song Name].wav
 
 ex:
 in the "Westkust__" folder, the following
@@ -39,7 +40,7 @@ in the "Westkust__" folder, the following
 will be used to replace Swirl, Dishwasher, and Drown in the soundtrack
 ```
 <ul>
-  <li>Order Number - Sorts the songs in a manner that determines what original song gets replaced. This means, when sorting alphabetically, the first song in the Crystal Boys folder will replace the first Crystal Boys track (Nightlife) in-game</li>
+  <li>Order Number - Maps the song you're naming to a song from that folder's artist. For example, In the Crystal Boys folder, an Order Nuber of 1 will replace their first track (Nightlife) in-game.You can use the `songlist.txt` ij each artists folder to guide your order assignments.</li>
 </ul>
 
 #### 3. Run the mod tools
