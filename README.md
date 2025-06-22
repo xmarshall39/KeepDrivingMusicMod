@@ -3,9 +3,9 @@
 A collection of modding tools for Keep Driving that allow you to replace the existing soundtrack with custom music from your local files. This toolkit runs a lightly modified version of the UndertaleModToolCLI
 
 ## How to Use
-Download the latest precompiled build from the Releases tab. The main and currently supported method for song replacements is a process called “bulk replacement”.
+Download the latest precompiled build from the Releases tab. The main and currently supported method for song replacements is a process called **“bulk replacement”**.
 
-This will map .wav files in specified directories to individual songs playable on the in-game radio, allowing you to replace part of or the entire soundtrack with a single command.
+This will map .wav files in specified directories to individual songs playable on the in-game radio, allowing you to replace part of or the entire soundtrack with a single command. There's no need to replace every song in the game if you don't want to
 
 The steps to do so are as follows:
   
@@ -14,10 +14,10 @@ The steps to do so are as follows:
 - Any songs you don’t replace will play as normal
 
 #### 2. Plan out your replacements
-- Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The songlist.txt in each folder will indicate what the original tracks were and how many there are
-  - Song folders are named with a code for representing a band in the base game followed by an underscore
-  - For organizational convenience, you may add to the folder name after the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern
-- Add song files to each folder. You can add up to total number of songs that artist had in the base game
+- Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The `songlist.txt` in each folder will indicate what the original tracks were and how many there are
+  - Song folders are named with a code for representing a band in the base game followed by an underscore. The code before the underscore is essential and **should not be changed**.
+  - For organizational convenience, you may add to the folder name **after** the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern.
+- Add song files to each folder. You can add up to total number of songs that artist had in the base game. Any songs not replaced will remain unmodified.
 - Rename each song according to the following format:
     
 ```
@@ -30,9 +30,11 @@ in the "Westkust__" folder, the following
     2__Kevin Abstract__ARIZONA BABY__Peach.wav
     3__Kendrick Lamar__GNX__tv off (feat. lefty gunplay).wav
 
-will be used to replace Swirl, Dishwasher, and Drown in the soundtrack
+will be used to replace Swirl, Dishwasher, and Drown in the soundtrack.
+
+Note that each item in the format is separated by **two** underscores!
 ```
-- **Order Number** - Maps the song you're naming to a song from that folder's artist. For example, In the Crystal Boys folder, an Order Nuber of 1 will replace their first track (Nightlife) in-game.You can use the `songlist.txt` of each artists' folder to guide your order assignments.
+- **Order Number** - Maps the song you're naming to a song from that folder's artist. For example, In the Crystal Boys folder, an Order Number of 1 will replace their first track (Nightlife) in-game.You can use the `songlist.txt` of each artists' folder to guide your order assignments.
 
 #### 3. Run the mod tools
 * Open the command prompt in the location of your downloaded build
