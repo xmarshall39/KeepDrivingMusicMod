@@ -38,10 +38,14 @@ Note that each item in the format is separated by **two** underscores!
 
 #### 3. Run the mod tools
 * Open the command prompt in the location of your downloaded build
-* Run `KeepDrivingModCLI.exe`
+* `KeepDrivingModCLI.exe` is the main program for executing the mod tools.
+
+Example Command:
 ```batch
 KeepDrivingModCLI.exe "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving" "C:\Users\monst\Music\Keep Driving Soundtracks\DevTest" --output "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving\export"
 ```
+* Run `KeepDrivingModCLI.exe -h` for more information on command formatting
+  
 #### Results
 When you open the game’s radio, you’ll see the replaced songs sorted by artist name (not album) as this is the game’s original behavior. There is no known limit to the number of songs you can have attributed to a specific artist. As you progress through the game and unlock songs, those which you obtain will be determined by your replacements
 
