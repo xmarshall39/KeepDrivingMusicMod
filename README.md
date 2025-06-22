@@ -14,7 +14,7 @@ The steps to do so are as follows:
 - Any songs you don’t replace will play as normal
 
 #### 2. Plan out your replacements
-- Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The `songlist.txt` in each folder will indicate what the original tracks were and how many there are
+- Copy `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The `songlist.txt` in each folder will indicate what the original tracks were and how many there are
   - Song folders are named with a code for representing a band in the base game followed by an underscore. The code before the underscore is essential and **should not be changed**.
   - For organizational convenience, you may add to the folder name **after** the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern.
 - Add song files to each folder. You can add up to total number of songs that artist had in the base game. Any songs not replaced will remain unmodified.
@@ -38,14 +38,24 @@ Note that each item in the format is separated by **two** underscores!
 
 #### 3. Run the mod tools
 * Open the command prompt in the location of your downloaded build
-* `KeepDrivingModCLI.exe` is the main program for executing the mod tools.
-
-Example Command:
+* `KeepDrivingModCLI.exe` is the main program for executing the mod tools from the command line by performing Bulk Replacement.
+* It accepts the following mandatory arguments, which must be provided in order:
+  *  **KeepDrivingSteamDir** - The directory containing your Steam installation of Keep Driving
+  *  **SoundtrackDir** - Directory containing the replacement soundtrack you created
+* And the following optional arguments
+  * `--output` - Directory where all new game files will be written
+* Example Command:
 ```batch
 KeepDrivingModCLI.exe "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving" "C:\Users\monst\Music\Keep Driving Soundtracks\DevTest" --output "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving\export"
 ```
 * Run `KeepDrivingModCLI.exe -h` for more information on command formatting
-  
+
+Output:
+* When run correctly, `KeepDrivingModCLI.exe` will produce a new `data.win` and `audiogroup3.dat` file, which contain the data for all in-game songs.
+* By default, these files are written to the Keep Driving Steam directory, overwriting the original files
+  * If running with `--output`, you'll need to manually overwrite `data.win` and `audiogroup3.dat` in the Steam directory
+* Bulk Replacement is now complete, and you may now run the game!
+
 #### Results
 When you open the game’s radio, you’ll see the replaced songs sorted by artist name (not album) as this is the game’s original behavior. There is no known limit to the number of songs you can have attributed to a specific artist. As you progress through the game and unlock songs, those which you obtain will be determined by your replacements
 
