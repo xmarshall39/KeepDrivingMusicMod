@@ -26,7 +26,7 @@ The steps to do so are as follows:
 ex:
 in the "Westkust__" folder, the following
 
-    1__BROCKHAMPTON_GINGER__NO HALO.wav
+    1__BROCKHAMPTON__GINGER__NO HALO.wav
     2__Kevin Abstract__ARIZONA BABY__Peach.wav
     3__Kendrick Lamar__GNX__tv off (feat. lefty gunplay).wav
 
