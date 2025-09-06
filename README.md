@@ -13,19 +13,39 @@ The steps to do so are as follows:
 - As there are 71 songs in the base game, you can replace as many tracks
 - Any songs you don’t replace will play as normal
 <Details>
-<Summary><h4>Recommended: Quick song aquisition and formatting using SpotDL</h4></Summary>
+<Summary><h3>Recommended: Quick song aquisition and formatting using SpotDL</h3></Summary>
   
-In the next step, you'll find that the .wav files we use must be named a specific way for bulk replacement compatbility. If you plan on aquiring songs using [SpotDL](https://github.com/spotDL/spotify-downloader), I've included a script to automate this process.
-  
-_Before getting started, please ensure SpotDL is downloaded and working. Then, I strongly recommend that you add SpotDL to your list of PATH programs and set its default file type to .wav_
+In step 2, you'll find that the .wav files we use must be named a specific way for bulk replacement compatbility. If you plan on aquiring songs using [SpotDL](https://github.com/spotDL/spotify-downloader), I've included a script to automate this process. Spotify playlists are also a great way to manage your OST's and share them with others!
 
-- Install [Python 3.x](https://www.python.org/downloads/) (if not already present)
-- In Command Prompt, run `kdmt-song-formatter.py` with the following command
+- Install [Python](https://www.python.org/downloads/) (version 3.10 or higher) and add it to your PATH
+- Open the Command Prompt and add SpotDL to python by running `pip install spotdl`
+- Open/navigate Command Prompt to the location of `kdmt-song-formatter.py` and run it in accordance with the following example
 ```
-  python kdmt-song-formatter [SONG_DOWNLOAD_LOCATION] [SPOTIFY SONG/PLAYLIST LINK]
-  ---
-  python kdmt-song-formatter C:\Users\xmarshall39\Music\Keep Driving Soundtracks\FormatterTesting https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=0cf27a1ff4684c4b
+python kdmt-song-formatter [SONG_DOWNLOAD_LOCATION] [SPOTIFY SONG/PLAYLIST LINK]
+
+--- e.x ---
+python kdmt-song-formatter C:\Users\xmarshall39\Music\KDMT\FormatterTesting https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4
+
+--- output ---
+  1__Fugees__The Score (Expanded Edition)__Fu-Gee-La.wav
+  2____3 __Living With Determination --.wav
+  3__MAXIMUM THE HORMONE__Yoshu Fukushu__F.wav
+  4__Bad Bunny__YHLQMDLG__3.wav
+  5__Jessie Reyez__PAID IN MEMORIES__CUDN’T B ME.wav
 ```
+- You may use `.` as the `[SONG_DOWNLOAD_LOCATION]` to download files to the current directory
+- Optionally, add `-u` or `--unicode` to the end of your command to allow unicode characters in the song name output. For example:
+```
+python kdmt-song-formatter . https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4 --unicode
+
+--- output ---
+  1__Fugees__The Score (Expanded Edition)__Fu-Gee-La.wav
+  2__アトラスサウンドチーム__ペルソナ3 オリジナル・サウンドトラック__Living With Determination -巌戸台分寮アレンジ-.wav
+  3__MAXIMUM THE HORMONE__Yoshu Fukushu__F.wav
+  4__Bad Bunny__YHLQMDLG__3.wav
+  5__Jessie Reyez__PAID IN MEMORIES__CUDN’T B ME.wav
+```
+- NOTE: Ascii characters disallowed in Windows filenames will be excluded, which is why the Bad Bunny song `<3` gets saved as `3`
 </Details>
 
 #### 2. Plan out your replacements
@@ -38,7 +58,7 @@ _Before getting started, please ensure SpotDL is downloaded and working. Then, I
 ```
 [Order Number]__[Artist Name]__[Album Name]__[Song Name].wav
 
-ex:
+--- e.x ---
 in the "Westkust__" folder, the following
 
     1__BROCKHAMPTON_GINGER__NO HALO.wav
@@ -54,7 +74,7 @@ will be used to replace Swirl, Dishwasher, and Drown in the soundtrack
 * Open the command prompt in the location of your downloaded build
 * Run `KeepDrivingModCLI.exe`
 ```batch
-KeepDrivingModCLI.exe "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving" "C:\Users\monst\Music\Keep Driving Soundtracks\DevTest" --output "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving\export"
+KeepDrivingModCLI.exe "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving" "C:\Users\xmarshall39\Music\KDMT\DevTest" --output "C:\Program Files (x86)\Steam\steamapps\common\Keep Driving\export"
 ```
 #### Results
 When you open the game’s radio, you’ll see the replaced songs sorted by artist name (not album) as this is the game’s original behavior. There is no known limit to the number of songs you can have attributed to a specific artist. As you progress through the game and unlock songs, those which you obtain will be determined by your replacements
