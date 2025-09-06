@@ -1,6 +1,6 @@
 # KeepDrivingMusicModTools
 
-A collection of modding tools for Keep Driving that allow you to replace the existing soundtrack with custom music from your local files. This toolkit runs a lightly modified version of the UndertaleModToolCLI
+A collection of modding tools for Keep Driving that allow you to replace the existing soundtrack with custom music from your local files. This toolkit runs a lightly modified version of the UndertaleModToolCLI.
 
 ## How to Use
 Download the latest precompiled build from the Releases tab. The main and currently supported method for song replacements is a process called “bulk replacement”.
@@ -91,7 +91,7 @@ In order to compile the repo yourself, the `.NET Core 8 SDK` or later is require
 - Run `vs_buildscript.bat`
 - Contents will be written to the `build` folder
 
-##Acknowledgements
+## Acknowledgements
 Thank you to the following creators, whose work has empowered and inspired my own
 - The Underminers team, and all contributers to the Undertale Mod Tool
 - SpotDL
