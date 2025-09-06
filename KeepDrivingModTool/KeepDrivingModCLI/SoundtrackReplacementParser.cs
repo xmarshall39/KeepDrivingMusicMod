@@ -16,7 +16,7 @@ namespace KeepDrivingModCLI
     {
         /// <summary>
         /// Single-word artists retain the whole word, while multi-word artists are abbreviated
-        /// To keep directory names short & easy
+        /// To keep directory names short and easy
         /// </summary>
         public static Dictionary<string, string> ArtistAbbreviationLUT = new Dictionary<string, string>()
         {
@@ -52,6 +52,12 @@ namespace KeepDrivingModCLI
             return replacements.Find(x => x.kdr_artist == artistName  && x.kdr_artistIndex == artistIndex);
         }
 
+        /// <summary>
+        /// Assign replacement songs to existing KDR data
+        /// </summary>
+        /// <param name="replacements"></param>
+        /// <param name="parseMethod"></param>
+        /// <returns></returns>
         public bool Parse(List<ReplacementOjbect> replacements, ParseMethod parseMethod = ParseMethod.Metadata)
         {
             bool anyReplacements = false;
@@ -76,11 +82,18 @@ namespace KeepDrivingModCLI
                     {
                         Console.WriteLine($"Mapping replacements for {originalArtistName} songs as {replacementCode} songs");
                     }
-                    string[] files = Directory.GetFiles(fullDir);
+                    string[] files = Directory.GetFiles(fullDir).Where(x => Path.GetExtension(x) == ".wav").ToArray();
                     for(int i = 0; i < files.Length; ++i)
                     {
+                        int replacementNo;
+                        string filename = Path.GetFileName(files[i]);
+                        if(!int.TryParse(filename[0].ToString(), out replacementNo))
+                        {
+                            Console.Error.WriteLine($"Song filename formatting error: {filename} please ensure the filename begins with a number" +
+                                "denoting the target replacement!");
+                        }
                         ReplacementOjbect target =
-                            FindMatchingReplacement(originalArtistName, i, replacements);
+                            FindMatchingReplacement(originalArtistName, replacementNo - 1, replacements);
 
                         if (target != null)
                         {

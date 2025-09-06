@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Security.Policy;
+using System.CommandLine.Builder;
+using System.CommandLine.Parsing;
+
 
 namespace KeepDrivingModCLI
 {
@@ -16,10 +13,10 @@ namespace KeepDrivingModCLI
     {
         static int Main(string[] args) 
         {
-            var kdBaseDirArg = new Argument<DirectoryInfo>(name: "Keep_Driving_Steam_Dir", description: "Location of steam keep driving dir");
-            var soundtrackDirArg = new Argument<DirectoryInfo>(name: "SoundtrackDir", description: "Location of steam keep driving dir");
+            var kdBaseDirArg = new Argument<DirectoryInfo>(name: "KeepDrivingSteamDir", description: "Directory containing your Steam installation of Keep Driving. This folder will include the .exe along with files like data.win and audiogroup.dat");
+            var soundtrackDirArg = new Argument<DirectoryInfo>(name: "SoundtrackDir", description: "Directory containing the replacement soundtrack you created. It's subdirectories will include folders named after the base game's wonderful musical artists.");
 
-            var outputOption = new Option<DirectoryInfo>(new string[] { "-o", "--output"}, "Where to write files.");
+            var outputOption = new Option<DirectoryInfo>(new string[] { "-o", "--output"}, "Directory to write new data.win and audiogroup.dat files. Defaults to Keep Driving's Steam directory.");
             outputOption.SetDefaultValue(null);
 
             var rootCommand = new RootCommand("Root command")
@@ -32,9 +29,11 @@ namespace KeepDrivingModCLI
             {
                RunBulkReplacement(baseDir, soundtrackDir, outputDir);
             }, kdBaseDirArg, soundtrackDirArg, outputOption);
-
-            var result = rootCommand.Invoke(args);
-
+            
+            Parser commandLine = new CommandLineBuilder(rootCommand)
+            .UseDefaults() // automatically configures dotnet-suggest
+            .Build();
+            var result = commandLine.Invoke(args);
             return result;
         }
 
@@ -42,15 +41,17 @@ namespace KeepDrivingModCLI
         {
             if (outputDir == null) { outputDir = baseDir; }
 
-            //Try to validate using steam cm
-            MusicKDRParser kdrParser = new MusicKDRParser(Path.Combine(baseDir.FullName, "music.kdr"));
+            string baseKDRPath = "music.kdr";
+            if (!File.Exists(baseKDRPath)) baseKDRPath = "../../../../music.kdr";
+
+            MusicKDRParser kdrParser = new MusicKDRParser(Path.Combine(baseDir.FullName, baseKDRPath));
             List<ReplacementOjbect> replacements = kdrParser.Deseialize();
             SoundtrackReplacementParser soundtrackParser = new SoundtrackReplacementParser(soundtrackDir.FullName);
             if (!soundtrackParser.Parse(replacements, SoundtrackReplacementParser.ParseMethod.Filename))
             {
                 return;
             }
-            //Populate command list using replacement data
+
             List<string> commands = ReplacementOjbect.GenerateReplacementCommands(baseDir.FullName, outputDir.FullName, replacements);
 
             for (int i = 0; i < commands.Count; ++i)
@@ -82,7 +83,6 @@ namespace KeepDrivingModCLI
                 }
             }
 
-            //Execute CLI executable with generated commands
             kdrParser.TrySerialize(outputDir.FullName, replacements);
 
             return;

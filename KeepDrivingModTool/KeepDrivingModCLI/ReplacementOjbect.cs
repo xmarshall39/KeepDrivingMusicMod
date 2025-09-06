@@ -14,11 +14,6 @@ namespace KeepDrivingModCLI
             AG1, AG3, AG4, WIN
         }
 
-        public struct ReplacementData
-        {
-            DataFile dataFile;
-            string newSongPath;
-        }
         public struct FileMapping : IEquatable<FileMapping>
         {
             public DataFile file;
@@ -146,7 +141,7 @@ namespace KeepDrivingModCLI
         }
 
         /// <summary>
-        /// Populate a set of commands for each file that hosts soundtrack data
+        /// Populate a set of UMT_CLI commands for each file that hosts soundtrack data
         /// </summary>
         /// <param name="inputDir"></param>
         /// <param name="outputDir"></param>
@@ -227,8 +222,7 @@ namespace KeepDrivingModCLI
         {
             EmbeddedTrack = $"music_{ReplaceSpacesWithUnderscore(replacement_artist)}__" +
                 $"{ReplaceSpacesWithUnderscore(replacement_album)}__" +
-                $"{replacement_trackNo}_{ReplaceSpacesWithUnderscore(replacement_trackName)}";
-            
+                $"{replacement_trackNo}_{ReplaceSpacesWithUnderscore(replacement_trackName)}";  
         }
 
         public void Print()
