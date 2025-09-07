@@ -15,16 +15,19 @@ The steps to do so are as follows:
 <Details>
 <Summary><h3>Recommended: Quick song aquisition and formatting using SpotDL</h3></Summary>
   
-In step 2, you'll find that the .wav files we use must be named a specific way for bulk replacement compatbility. If you plan on aquiring songs using [SpotDL](https://github.com/spotDL/spotify-downloader), I've included a script to automate this process. Spotify playlists are also a great way to manage your OST's and share them with others!
-
-- Install [Python](https://www.python.org/downloads/) (version 3.10 or higher) and add it to your PATH
+In step 2, you'll find that the .wav files we use must be named a specific way for bulk replacement compatbility. If you plan on aquiring songs using [SpotDL](https://github.com/spotDL/spotify-downloader), I've included a script to automate this process that this section will go over. Spotify playlists are also a great way to manage your OST's and share them with others!
+<img src="images/python_PATH.png" width=35% height=35% align="right" alt="Python Installation Screen with Add Python.exe to PATH selected">
+<br/><br/>
+- Install [Python](https://www.python.org/downloads/) (version 3.10 or higher) and add it to your PATH 
 - Open the Command Prompt and add SpotDL to python by running `pip install spotdl`
-- Open/navigate Command Prompt to the location of `kdmt-song-formatter.py` and run it in accordance with the following example
+- Then run `spotdl --download -ffmpeg` to add ffmpeg to spotdl
+- Open/navigate Command Prompt to the location of `kdmt-song-formatter.py` and run it in accordance with the following example based on [this playlist](https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4):
 ```
-python kdmt-song-formatter [SONG_DOWNLOAD_LOCATION] [SPOTIFY SONG/PLAYLIST LINK]
+--- format ---
+python kdmt-song-formatter [SONG_DOWNLOAD_DIRECTORY] [SPOTIFY SONG/PLAYLIST LINK]
 
 --- e.x ---
-python kdmt-song-formatter C:\Users\xmarshall39\Music\KDMT\FormatterTesting https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4
+python kdmt-song-formatter.py "C:\Users\xmarshall39\Music\KDMT\Formatter Testing" https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4
 
 --- output ---
   1__Fugees__The Score (Expanded Edition)__Fu-Gee-La.wav
@@ -33,9 +36,14 @@ python kdmt-song-formatter C:\Users\xmarshall39\Music\KDMT\FormatterTesting http
   4__Bad Bunny__YHLQMDLG__3.wav
   5__Jessie Reyez__PAID IN MEMORIES__CUDN’T B ME.wav
 ```
-- You may use `.` as the `[SONG_DOWNLOAD_LOCATION]` to download files to the current directory
+- Note that all non-ascii characters in song 2 have been stripped away. In cases like this, you may need to fill in some missing information yourself.
+- For example, I may decide to change it to `2__Atlus Sound Team__Persona 3 OST__Living With Determination.wav`
+<Details><Summary>Allow Unicode Characters in Output</Summary>
+  
 - Optionally, add `-u` or `--unicode` to the end of your command to allow unicode characters in the song name output. For example:
+  
 ```
+--- format ---
 python kdmt-song-formatter . https://open.spotify.com/playlist/6efZ86E292MgcVIUoziP86?si=98251fa7e0b445c4 --unicode
 
 --- output ---
@@ -45,30 +53,45 @@ python kdmt-song-formatter . https://open.spotify.com/playlist/6efZ86E292MgcVIUo
   4__Bad Bunny__YHLQMDLG__3.wav
   5__Jessie Reyez__PAID IN MEMORIES__CUDN’T B ME.wav
 ```
-- NOTE: Ascii characters disallowed in Windows filenames will be excluded, which is why the Bad Bunny song `<3` gets saved as `3`
+- Unicode characters may not be compatible with the fonts used in your given language and may have unpredictable behavior during the modding process
+</Details>
+<Details><Summary>Extra Notes</Summary>
+  
+  - You may use `.` as the `[SONG_DOWNLOAD_DIRECTORY]` to download files to the current directory
+  - Ascii characters disallowed in Windows filenames will be excluded, which is why the Bad Bunny song `<3` gets saved as `3`
+  </Details>
 </Details>
 
 #### 2. Plan out your replacements
-- Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The songlist.txt in each folder will indicate what the original tracks were and how many there are
-  - Song folders are named with a code for representing a band in the base game followed by an underscore
-  - For organizational convenience, you may add to the folder name after the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern
-- Add song files to each folder. You can add up to total number of songs that artist had in the base game
+- Place `dirmaker.bat` in the root folder of wherever you’d like to keep your music and run it. This will create folders in which you’ll sort your songs. The `songlist.txt` in each folder will indicate what the original tracks were, how many there are, and what order they're in
+  - Song folders are named with a code for representing a band in the base game followed by an underscore. The code before the underscore is essential and **should not be changed**.
+  - For organizational convenience, you may add to the folder name **after** the underscore. This can be helpful if song replacements are grouped using a certain theme or pattern.
+- Add song files to each folder. You can add up to total number of songs that artist had in the base game. Any songs not replaced will remain unmodified.
 - Rename each song according to the following format:
     
 ```
+--- format ---
 [Order Number]__[Artist Name]__[Album Name]__[Song Name].wav
 
 --- e.x ---
-in the "Westkust__" folder, the following
+in the "Westkust_" folder, the following
 
-    1__BROCKHAMPTON_GINGER__NO HALO.wav
+    1__BROCKHAMPTON__GINGER__NO HALO.wav
     2__Kevin Abstract__ARIZONA BABY__Peach.wav
     3__Kendrick Lamar__GNX__tv off (feat. lefty gunplay).wav
 
 will be used to replace Swirl, Dishwasher, and Drown in the soundtrack
+
+Note that each item in the format is separated by **two** underscores!
 ```
-- **Order Number** - Maps the song you're naming to a song from that folder's artist. For example, In the Crystal Boys folder, an Order Nuber of 1 will replace their first track (Nightlife) in-game.You can use the `songlist.txt` of each artists' folder to guide your order assignments.
-- If you followed the SpotDL instructions in step 1, the (lengthy) file renaming process will not be necessary except for songs where a valid Artist or Song Name could not be found.
+- **Order Number** - Maps the song you're naming to a song from that folder's artist. For example, In the Crystal Boys folder, an Order Nuber of 1 will replace their first track (Nightlife) in-game. You can use the `songlist.txt` of each artists' folder to guide your order assignments.
+<Details><Summary>More on Order Numbers</Summary>
+
+- The Order Number of a song <b>does not</b> need to match the song number found in `songlist.txt`. The number instead determines which song is the order in which new songs are used to replace originals
+- In effect, if the songs above had Order Numbers 8, 13, and 33 respectively, they would still replace the same Westkust songs
+</Details>
+
+If you followed the SpotDL instructions in step 1, the (lengthy) file renaming process will not be necessary, except for songs where a valid Artist or Song Name could not be found. You will still need to assign songs to folders.
 
 #### 3. Run the mod tools
 * Open the command prompt in the location of your downloaded build
